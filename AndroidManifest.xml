@@ -30,6 +30,10 @@
             android:name="com.rharriso.minstrel.AlbumsActivity"
             android:label="@string/title_activity_albums" >
         </activity>
+        <activity
+            android:name="com.rharriso.minstrel.TracksActivity"
+            android:label="@string/title_activity_tracks" >
+        </activity>
     </application>
 
 </manifest>

@@ -6,5 +6,6 @@
     <string name="menu_settings">Settings</string>
     <string name="title_activity_artists">ArtistsActivity</string>
     <string name="title_activity_albums">AlbumsActivity</string>
+    <string name="title_activity_tracks">TracksActivity</string>
 
 </resources>

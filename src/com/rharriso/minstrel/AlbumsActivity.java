@@ -5,10 +5,10 @@ import java.util.HashSet;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,6 +16,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.rharriso.minstrel.models.Album;
+import com.rharriso.minstrel.models.Artist;
 import com.rharriso.minstrel.models.ModelListItem;
 
 public class AlbumsActivity extends Activity implements OnItemClickListener{
@@ -89,13 +90,17 @@ public class AlbumsActivity extends Activity implements OnItemClickListener{
 				mAlbumList.add(a);
 				
 			}while(cursor.moveToNext());
-			
-			Log.d("FUCKING ALBUM", mAlbumList.toString());
 		}
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// TODO Auto-generated method stub		
+	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+		Album album = (Album)mAlbumList.get(position);
+		
+		Intent intent = new Intent();
+		intent.setClass(this, TracksActivity.class);		
+		intent.putExtra("album_id", album.getId());
+		
+		startActivity(intent);		
 	}
 }
