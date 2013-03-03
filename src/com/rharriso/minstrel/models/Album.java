@@ -1,6 +1,6 @@
 package com.rharriso.minstrel.models;
 
-public class Artist implements ModelListItem{
+public class Album implements ModelListItem{
 
 	private String name;
 	private Long id;

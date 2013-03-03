@@ -11,5 +11,11 @@
         android:id="@+id/artists_btn"
         android:text="artists"/>
     
+    <Button 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/albums_btn"
+        android:text="albums"/>
+    
 
 </LinearLayout>

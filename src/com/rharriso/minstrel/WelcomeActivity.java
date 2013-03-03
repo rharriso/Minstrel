@@ -13,6 +13,7 @@ public class WelcomeActivity extends Activity implements OnClickListener {
 
 	MediaPlayer mPlayer = new MediaPlayer();
 	Button mArtistsBtn = null;
+	Button mAlbumsBtn = null;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +21,9 @@ public class WelcomeActivity extends Activity implements OnClickListener {
         setContentView(R.layout.welcome);
         
         mArtistsBtn = (Button)findViewById(R.id.artists_btn);
-        mArtistsBtn.setOnClickListener(this);     
+        mArtistsBtn.setOnClickListener(this);
+        mAlbumsBtn = (Button)findViewById(R.id.albums_btn);
+        mAlbumsBtn.setOnClickListener(this);
     }
 
     @Override
@@ -31,10 +34,11 @@ public class WelcomeActivity extends Activity implements OnClickListener {
     }
 
 	@Override
-	public void onClick(View v) {
+	public void onClick(View v) {		
 		Intent intent = new Intent();
 				
 		if(v == mArtistsBtn) intent.setClass(this, ArtistsActivity.class);
+		if(v == mAlbumsBtn)  intent.setClass(this, AlbumsActivity.class);
 		
 		startActivity(intent);
 	}

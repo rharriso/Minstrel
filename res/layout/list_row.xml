@@ -7,6 +7,6 @@
 	<TextView 
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
-	    android:id="@+id/artist_name"/>
+	    android:id="@+id/row_title"/>
     
 </LinearLayout>
