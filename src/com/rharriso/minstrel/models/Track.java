@@ -1,5 +1,6 @@
 package com.rharriso.minstrel.models;
 
+import android.content.ContentUris;
 import android.net.Uri;
 
 public class Track implements ModelListItem{
@@ -30,12 +31,10 @@ public class Track implements ModelListItem{
 	}
 	public void setId(Long id) {
 		this.id = id;
+		this.uri = ContentUris.withAppendedId(android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, id);
 	}
 	public Uri getUri() {
 		return uri;
-	}
-	public void setUri(Uri uri) {
-		this.uri = uri;
 	}
 	public Long getDuration() {
 		return duration;

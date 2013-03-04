@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.rharriso.minstrel.models.Artist;
 import com.rharriso.minstrel.models.ModelListItem;
 import com.rharriso.minstrel.models.Track;
 
@@ -29,7 +31,7 @@ public class TracksActivity extends Activity implements OnItemClickListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tracks);
 		
-		//load albums
+		//load tracks
 		Bundle extras = getIntent().getExtras(); 
 		if (extras != null) mAlbumId = extras.getLong("album_id");
 		loadTracks();
@@ -101,9 +103,13 @@ public class TracksActivity extends Activity implements OnItemClickListener{
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// TODO Auto-generated method stub
+	public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
+		Track track = (Track) mTrackList.get(position);
 		
+		Intent intent = new Intent();
+		intent.setClass(this, PlayerActivity.class);		
+		intent.putExtra("track_id", track.getId());
+		
+		startActivity(intent);
 	}
-	
 }
