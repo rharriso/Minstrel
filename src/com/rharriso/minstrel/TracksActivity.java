@@ -16,7 +16,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.rharriso.minstrel.models.Artist;
 import com.rharriso.minstrel.models.ModelListItem;
 import com.rharriso.minstrel.models.Track;
 

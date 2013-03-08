@@ -16,7 +16,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.rharriso.minstrel.models.Album;
-import com.rharriso.minstrel.models.Artist;
 import com.rharriso.minstrel.models.ModelListItem;
 
 public class AlbumsActivity extends Activity implements OnItemClickListener{
