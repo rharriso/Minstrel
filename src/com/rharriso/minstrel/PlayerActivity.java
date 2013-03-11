@@ -1,5 +1,9 @@
 package com.rharriso.minstrel;
 
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -14,22 +18,21 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.TextView;
 
 import com.rharriso.minstrel.models.Bookmark;
 import com.rharriso.minstrel.models.Track;
 
 public class PlayerActivity extends Activity implements OnClickListener, OnSeekBarChangeListener{
 
-	private AudioPlayerService mPlayerService;
+	private AudioPlayerService mPlayerService = null;
 	private Boolean mIsBound = false;
+	private Timer mTimer = null;
 	
 	private Button mBookmarkButton;
 	private Button mPausePlayButton;
 	private SeekBar mTrackSeekBar;
-	
-	private Track mTrack;
-	private String mArtistName;
-	private String mAlbumName;
+	private TextView mTimeStamp;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +44,6 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
 		 */
 		//load audio service
 		doBindService();
-
 		
 		/*
 		 * Add button actions
@@ -50,12 +52,27 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
 		mBookmarkButton.setOnClickListener(this);
 		mPausePlayButton = (Button)findViewById(R.id.pause_play_btn);
 		mPausePlayButton.setOnClickListener(this);
+		mTimeStamp = (TextView)findViewById(R.id.time_stamp);
 
 		/*
 		 * Seek bar action
 		 */
 		mTrackSeekBar = (SeekBar)findViewById(R.id.track_seek_bar);
 		mTrackSeekBar.setOnSeekBarChangeListener(this);
+		
+		//check the time relatively often
+		mTimer = new Timer();
+		mTimer.scheduleAtFixedRate(new TimerTask() {				
+			@Override
+			public void run() {
+				runOnUiThread(new Runnable() {			
+					@Override
+					public void run() {
+						updateTimeStamp(); 
+					}
+				});
+			}
+		}, 0, 1000);
 		
 	}
 	
@@ -83,12 +100,9 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
 	private ServiceConnection mConnection = new ServiceConnection(){
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			mPlayerService = ((AudioPlayerService.LocalBinder)service).getService();
-			Log.d("FUUUUUUCK", "service bound "+service.toString());
 		}
 		
-		public void onServiceDisconnected(ComponentName className) {
-			 
-		}
+		public void onServiceDisconnected(ComponentName className) {}
 	};
 	
 	void doBindService() {
@@ -109,6 +123,7 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
 	protected void onDestroy() {
 	    super.onDestroy();
 	    doUnbindService();
+	    if(mTimer != null) mTimer.cancel(); mTimer.purge();
 	}
 
 	/**
@@ -119,11 +134,12 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		if(v == mBookmarkButton){
+			Track track = mPlayerService.getCurrentTrack();
 			Bookmark bookmark = new Bookmark();
-			bookmark.setTrackName(mTrack.getTitle());
-			bookmark.setTrackKey(mTrack.getTitleKey());
-			bookmark.setAlbumName(mAlbumName);
-			bookmark.setArtistName(mArtistName);
+			bookmark.setTrackName(track.getTitle());
+			bookmark.setTrackKey(track.getTitleKey());
+			bookmark.setAlbumName(track.getAlbumName());
+			bookmark.setArtistName(track.getAristName());
 			bookmark.setPosition(mPlayerService.getCurrentPosition());
 			bookmark.save();			
 		
@@ -147,5 +163,16 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
 	public void onStopTrackingTouch(SeekBar seekBar) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	protected void updateTimeStamp(){
+		if(mPlayerService == null) return;
+		
+		int currentPosition = mPlayerService.getCurrentPosition();
+		String timeStampStr = String.format("%02d:%02d", 
+				(int) ((currentPosition / (1000*60)) % 60),
+				(int) currentPosition / 1000 );
+		Log.d("HAI", timeStampStr);
+		mTimeStamp.setText(timeStampStr);
 	}
 }

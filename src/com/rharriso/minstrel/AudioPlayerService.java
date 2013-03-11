@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.rharriso.minstrel.models.Track;
 
@@ -58,12 +57,14 @@ public class AudioPlayerService extends Service {
 		/*
 		 * Load initial track
 		 */
-		Bundle extras = intent.getExtras();
-		loadTrack(extras.getString("track_key"));
-		
-		playTrack(mTrack);
-		int startPosition = extras.getInt("track_position",-1);
-		if(startPosition >= 0) seekTo(startPosition);
+		if(intent != null){
+			Bundle extras = intent.getExtras();
+			loadTrack(extras.getString("track_key"));
+			
+			playTrack(mTrack);
+			int startPosition = extras.getInt("track_position",-1);
+			if(startPosition >= 0) seekTo(startPosition);
+		}		
 		
         // We want this service to continue running until it is explicitly
         // stopped, so return sticky.
@@ -79,6 +80,13 @@ public class AudioPlayerService extends Service {
 	 */
 	public int getCurrentPosition(){
 		return mPlayer.getCurrentPosition();
+	}
+	
+	/**
+	 * @return current track
+	 */
+	public Track getCurrentTrack(){
+		return mTrack;
 	}
 	
 	/**
@@ -108,6 +116,7 @@ public class AudioPlayerService extends Service {
 			if(mPlayer.isPlaying()){
 				mPlayer.release();
 				mPlayer = new MediaPlayer();
+				
 			}
 			
 			mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -118,7 +127,7 @@ public class AudioPlayerService extends Service {
 			Log.e("minstrel.WelcomActivity", e.toString());
 		}
 	}
-		
+	
 	/**
 	 * @return track from id
 	 */

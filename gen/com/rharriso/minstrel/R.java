@@ -15,16 +15,17 @@ public final class R {
     }
     public static final class id {
         public static final int album_list=0x7f070000;
-        public static final int albums_btn=0x7f07000a;
+        public static final int albums_btn=0x7f07000b;
         public static final int artist_list=0x7f070001;
-        public static final int artists_btn=0x7f070009;
-        public static final int bookmark_btn=0x7f070005;
+        public static final int artists_btn=0x7f07000a;
+        public static final int bookmark_btn=0x7f070006;
         public static final int bookmark_list=0x7f070002;
-        public static final int bookmarks_btn=0x7f07000b;
-        public static final int menu_settings=0x7f07000c;
-        public static final int pause_play_btn=0x7f070006;
-        public static final int row_title=0x7f070008;
-        public static final int track_list=0x7f070007;
+        public static final int bookmarks_btn=0x7f07000c;
+        public static final int menu_settings=0x7f07000d;
+        public static final int pause_play_btn=0x7f070007;
+        public static final int row_title=0x7f070009;
+        public static final int time_stamp=0x7f070005;
+        public static final int track_list=0x7f070008;
         public static final int track_seek_bar=0x7f070004;
         public static final int track_title=0x7f070003;
     }
