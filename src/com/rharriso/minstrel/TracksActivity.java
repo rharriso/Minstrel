@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.textservice.SentenceSuggestionsInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
@@ -105,10 +107,12 @@ public class TracksActivity extends Activity implements OnItemClickListener{
 	public void onItemClick(AdapterView<?> adapter, View v, int position, long id) {
 		Track track = (Track) mTrackList.get(position);
 		
-		Intent intent = new Intent();
-		intent.setClass(this, PlayerActivity.class);		
-		intent.putExtra("track_key", track.getTitleKey());
+		Intent serviceIntent = new Intent(this, AudioPlayerService.class);
+		serviceIntent.putExtra("track_key", track.getTitleKey());
+		sendBroadcast(serviceIntent);
 		
+		Intent intent = new Intent();
+		intent.setClass(this, PlayerActivity.class);
 		startActivity(intent);
 	}
 }

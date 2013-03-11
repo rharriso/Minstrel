@@ -7,6 +7,8 @@ public class Track implements ModelListItem{
 
 	private String title;
 	private String titleKey;
+	private String albumName;
+	private String aristName;
 	private Long id;
 	private Uri uri;
 	private Long duration;
@@ -22,6 +24,18 @@ public class Track implements ModelListItem{
 	}
 	public String getTitleKey() {
 		return titleKey;
+	}
+	public String getAlbumName() {
+		return albumName;
+	}
+	public void setAlbumName(String albumName) {
+		this.albumName = albumName;
+	}
+	public String getAristName() {
+		return aristName;
+	}
+	public void setAristName(String aristName) {
+		this.aristName = aristName;
 	}
 	public void setTitleKey(String titleKey) {
 		this.titleKey = titleKey;

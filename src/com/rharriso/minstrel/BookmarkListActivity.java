@@ -48,11 +48,12 @@ public class BookmarkListActivity extends Activity implements OnItemClickListene
 	public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 		Bookmark bookmark = (Bookmark)mBookMarks.get(position);
 	
-		Intent intent = new Intent();
-		intent.setClass(this, PlayerActivity.class);		
-		intent.putExtra("track_key", bookmark.getTrackKey());
-		intent.putExtra("track_position", bookmark.getPosition());
+		Intent serviceIntent = new Intent(this, AudioPlayerService.class);
+		serviceIntent.putExtra("track_key", bookmark.getTrackKey());
+		serviceIntent.putExtra("track_position", bookmark.getPosition());
+		startService(serviceIntent);
 		
+		Intent intent = new Intent(this, PlayerActivity.class);
 		startActivity(intent);		
 	}	
 }

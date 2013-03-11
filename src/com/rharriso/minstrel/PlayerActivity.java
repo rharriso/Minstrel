@@ -2,14 +2,11 @@ package com.rharriso.minstrel;
 
 import android.app.Activity;
 import android.content.ComponentName;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -27,12 +24,12 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
 	private Boolean mIsBound = false;
 	
 	private Button mBookmarkButton;
+	private Button mPausePlayButton;
 	private SeekBar mTrackSeekBar;
 	
 	private Track mTrack;
 	private String mArtistName;
 	private String mAlbumName;
-	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,26 +37,19 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
 		setContentView(R.layout.activity_player);
 		
 		/*
-		 * Load initialize track
-		 */
-		Bundle extras = getIntent().getExtras();
-		loadTrack(extras.getString("track_key"));
-		
-		/*
 		 * Create audio service binding and play first tracks
 		 */
 		//load audio service
 		doBindService();
-		//play somethign on it
-		mPlayerService.playTrack(mTrack);
-		int startPosition = extras.getInt("track_position",-1);
-		if(startPosition >= 0) mPlayerService.seekTo(startPosition);
+
 		
 		/*
 		 * Add button actions
 		 */
 		mBookmarkButton = (Button)findViewById(R.id.bookmark_btn);
 		mBookmarkButton.setOnClickListener(this);
+		mPausePlayButton = (Button)findViewById(R.id.pause_play_btn);
+		mPausePlayButton.setOnClickListener(this);
 
 		/*
 		 * Seek bar action
@@ -70,50 +60,21 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
 	}
 	
 	@Override
+	protected void onStart(){
+		super.onStart();
+	}
+	
+	@Override
+	protected void onRestart(){
+		super.onRestart();
+	}
+	
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_player, menu);
 		return true;
-	}
-
-	/**
-	 * @return track from id
-	 */
-	private void loadTrack(String trackKey){
-		mTrack = new Track();
-		
-		String selectStr = MediaStore.Audio.Media.TITLE_KEY+" = ?";
-		String[] selectArgs = { trackKey };
-		
-		//get album name and ids
-		String[] projection = { MediaStore.Audio.Media._ID,
-								MediaStore.Audio.Media.TITLE,
-								MediaStore.Audio.Media.TITLE_KEY,
-								MediaStore.Audio.Media.ARTIST,
-								MediaStore.Audio.Media.ALBUM,
-								MediaStore.Audio.Media.DURATION };
-				
-		//search for albums for all artists or just the passed on
-		ContentResolver contentResolver = getContentResolver();
-		Cursor cursor = contentResolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-												projection, selectStr, selectArgs, MediaStore.Audio.Media.TRACK);
-				
-		if(cursor != null && cursor.moveToFirst()){
-			int idCol		= cursor.getColumnIndex(android.provider.MediaStore.Audio.Media._ID);
-			int titleCol	= cursor.getColumnIndex(android.provider.MediaStore.Audio.Media.TITLE);
-			int titleKeyCol	= cursor.getColumnIndex(android.provider.MediaStore.Audio.Media.TITLE_KEY);
-			int durationCol	= cursor.getColumnIndex(android.provider.MediaStore.Audio.Media.DURATION);
-			int artistCol	= cursor.getColumnIndex(android.provider.MediaStore.Audio.Media.ARTIST);
-			int albumCol	= cursor.getColumnIndex(android.provider.MediaStore.Audio.Media.ALBUM);
-			
-			mTrack.setId(cursor.getLong(idCol));
-			mTrack.setTitle(cursor.getString(titleCol));
-			mTrack.setTitleKey(cursor.getString(titleKeyCol));
-			mTrack.setDuration(cursor.getLong(durationCol));
-			mAlbumName = cursor.getString(albumCol);
-			mArtistName = cursor.getString(artistCol);
-		}
-	}
+	}	
 	
 	/**
 	 * @category service connection binding
@@ -125,16 +86,15 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
 			Log.d("FUUUUUUCK", "service bound "+service.toString());
 		}
 		
-		 public void onServiceDisconnected(ComponentName className) {
+		public void onServiceDisconnected(ComponentName className) {
 			 
-		 }
+		}
 	};
 	
 	void doBindService() {
-		
-	    bindService(new Intent(this, 
-	            AudioPlayerService.class), mConnection, Context.BIND_AUTO_CREATE);
-	    mIsBound = true;
+		Intent intent = new Intent(this, AudioPlayerService.class);
+		bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+		mIsBound = true;
 	}
 
 	void doUnbindService() {
@@ -166,6 +126,9 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
 			bookmark.setArtistName(mArtistName);
 			bookmark.setPosition(mPlayerService.getCurrentPosition());
 			bookmark.save();			
+		
+		}else if(v == mPausePlayButton){
+			mPlayerService.playToggle();
 		}
 	}
 	
