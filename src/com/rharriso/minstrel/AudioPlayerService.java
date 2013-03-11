@@ -83,6 +83,13 @@ public class AudioPlayerService extends Service {
 	}
 	
 	/**
+	 * @return current track position
+	 */
+	public int getDuration(){
+		return mPlayer.getDuration();
+	}
+	
+	/**
 	 * @return current track
 	 */
 	public Track getCurrentTrack(){

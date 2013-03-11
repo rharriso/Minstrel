@@ -100,6 +100,7 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
 	private ServiceConnection mConnection = new ServiceConnection(){
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			mPlayerService = ((AudioPlayerService.LocalBinder)service).getService();
+			mTrackSeekBar.setMax(mPlayerService.getDuration());
 		}
 		
 		public void onServiceDisconnected(ComponentName className) {}
@@ -150,7 +151,7 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
 	
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-		Log.d("Progress Bar", Integer.toString(progress));		
+		mPlayerService.seekTo(progress);		
 	}
 
 	@Override
@@ -172,7 +173,8 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
 		String timeStampStr = String.format("%02d:%02d", 
 				(int) ((currentPosition / (1000*60)) % 60),
 				(int) currentPosition / 1000 );
-		Log.d("HAI", timeStampStr);
+		
 		mTimeStamp.setText(timeStampStr);
+		mTrackSeekBar.setProgress(currentPosition);
 	}
 }
