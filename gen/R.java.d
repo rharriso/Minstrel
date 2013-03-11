@@ -1,0 +1,27 @@
+/home/rharriso/Code/Android/Minstrel/gen/com/rharriso/minstrel/R.java \
+ : /home/rharriso/Code/Android/Minstrel/res/drawable-xhdpi/ic_launcher.png \
+/home/rharriso/Code/Android/Minstrel/res/values/styles.xml \
+/home/rharriso/Code/Android/Minstrel/res/values/strings.xml \
+/home/rharriso/Code/Android/Minstrel/res/drawable-hdpi/ic_launcher.png \
+/home/rharriso/Code/Android/Minstrel/res/values-v14/styles.xml \
+/home/rharriso/Code/Android/Minstrel/res/values-v11/styles.xml \
+/home/rharriso/Code/Android/Minstrel/res/drawable-ldpi/ic_launcher.png \
+/home/rharriso/Code/Android/Minstrel/res/menu/welcome.xml \
+/home/rharriso/Code/Android/Minstrel/res/menu/activity_albums.xml \
+/home/rharriso/Code/Android/Minstrel/res/menu/activity_player.xml \
+/home/rharriso/Code/Android/Minstrel/res/menu/activity_tracks.xml \
+/home/rharriso/Code/Android/Minstrel/res/menu/activity_artists.xml \
+/home/rharriso/Code/Android/Minstrel/res/drawable-mdpi/ic_launcher.png \
+/home/rharriso/Code/Android/Minstrel/res/layout/activity_bookmarks.xml \
+/home/rharriso/Code/Android/Minstrel/res/layout/welcome.xml \
+/home/rharriso/Code/Android/Minstrel/res/layout/activity_albums.xml \
+/home/rharriso/Code/Android/Minstrel/res/layout/activity_player.xml \
+/home/rharriso/Code/Android/Minstrel/res/layout/activity_tracks.xml \
+/home/rharriso/Code/Android/Minstrel/res/layout/list_row.xml \
+/home/rharriso/Code/Android/Minstrel/res/layout/activity_artists.xml \
+/home/rharriso/Code/Android/Minstrel/res/layout/main.xml \
+/home/rharriso/Code/Android/Minstrel/bin/res/drawable-xhdpi/ic_launcher.png \
+/home/rharriso/Code/Android/Minstrel/bin/res/drawable-hdpi/ic_launcher.png \
+/home/rharriso/Code/Android/Minstrel/bin/res/drawable-ldpi/ic_launcher.png \
+/home/rharriso/Code/Android/Minstrel/bin/res/drawable-mdpi/ic_launcher.png \
+/home/rharriso/Code/Android/Minstrel/bin/AndroidManifest.xml \

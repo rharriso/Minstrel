@@ -14,11 +14,15 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        
+
         <!-- db stuffs, active android -->
-        <meta-data android:name="AA_DB_NAME" android:value="Minstrel.db" />
-		<meta-data android:name="AA_DB_VERSION" android:value="1" />
-        
+        <meta-data
+            android:name="AA_DB_NAME"
+            android:value="Minstrel.db" />
+        <meta-data
+            android:name="AA_DB_VERSION"
+            android:value="1" />
+
         <activity
             android:name="com.rharriso.minstrel.WelcomeActivity"
             android:label="@string/app_name" >
@@ -33,6 +37,10 @@
             android:label="@string/title_activity_artists" >
         </activity>
         <activity
+            android:name="com.rharriso.minstrel.BookmarkListActivity"
+            android:label="@string/title_activity_bookmarks" >
+        </activity>
+        <activity
             android:name="com.rharriso.minstrel.AlbumsActivity"
             android:label="@string/title_activity_albums" >
         </activity>
@@ -44,6 +52,12 @@
             android:name="com.rharriso.minstrel.PlayerActivity"
             android:label="@string/title_activity_player" >
         </activity>
+
+        <service
+            android:name="com.rharriso.minstrel.AudioPlayerService"
+            android:enabled="true"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>

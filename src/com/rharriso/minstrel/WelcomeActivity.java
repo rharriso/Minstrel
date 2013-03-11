@@ -14,6 +14,7 @@ public class WelcomeActivity extends Activity implements OnClickListener {
 	MediaPlayer mPlayer = new MediaPlayer();
 	Button mArtistsBtn = null;
 	Button mAlbumsBtn = null;
+    Button mBookmarksBtn = null;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +25,8 @@ public class WelcomeActivity extends Activity implements OnClickListener {
         mArtistsBtn.setOnClickListener(this);
         mAlbumsBtn = (Button)findViewById(R.id.albums_btn);
         mAlbumsBtn.setOnClickListener(this);
+        mBookmarksBtn = (Button)findViewById(R.id.bookmarks_btn);
+        mBookmarksBtn.setOnClickListener(this);
     }
 
     @Override
@@ -36,11 +39,16 @@ public class WelcomeActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {		
 		Intent intent = new Intent();
-				
-		if(v == mArtistsBtn) intent.setClass(this, ArtistsActivity.class);
-		if(v == mAlbumsBtn)  intent.setClass(this, AlbumsActivity.class);
+		Class<?> activityClass = null;	
 		
-		startActivity(intent);
+		if(v == mArtistsBtn)	activityClass = ArtistsActivity.class;
+		if(v == mAlbumsBtn)		activityClass = AlbumsActivity.class;
+        if(v == mBookmarksBtn)  activityClass = BookmarkListActivity.class;
+		
+        if(activityClass != null){
+        	intent.setClass(this, activityClass);
+        	startActivity(intent);
+        }		
 	}
     
 }

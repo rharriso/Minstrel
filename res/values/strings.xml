@@ -8,5 +8,6 @@
     <string name="title_activity_albums">AlbumsActivity</string>
     <string name="title_activity_tracks">TracksActivity</string>
     <string name="title_activity_player">PlayerActivity</string>
-
+    <string name="title_activity_bookmarks">BookmarkListActivity</string>
+	<string name="audio_player_service_started">AudioPlayerServiceStarted</string>
 </resources>

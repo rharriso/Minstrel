@@ -22,8 +22,8 @@ public class ModelListAdapter extends ArrayAdapter<ModelListItem>{
 	public ModelListAdapter(Context context, List<ModelListItem> models) {
 		super(context, R.layout.list_row, models);
 		
-		mContext 			= context;
-		mModelList			= models;
+		mContext	= context;
+		mModelList	= models;
 		
 	}
 	

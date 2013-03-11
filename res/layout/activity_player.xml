@@ -12,7 +12,7 @@
         android:text="Album - Track Name"/>
     
 	<SeekBar
-        android:id="@+id/time_line"
+        android:id="@+id/track_seek_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20sp"

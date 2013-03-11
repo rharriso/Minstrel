@@ -1,27 +1,34 @@
 package com.rharriso.minstrel;
 
-import java.io.IOException;
-
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.database.Cursor;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 
 import com.rharriso.minstrel.models.Bookmark;
 import com.rharriso.minstrel.models.Track;
 
-public class PlayerActivity extends Activity implements OnClickListener{
+public class PlayerActivity extends Activity implements OnClickListener, OnSeekBarChangeListener{
 
-	private MediaPlayer mPlayer = new MediaPlayer();
+	private AudioPlayerService mPlayerService;
+	private Boolean mIsBound = false;
+	
 	private Button mBookmarkButton;
+	private SeekBar mTrackSeekBar;
+	
 	private Track mTrack;
 	private String mArtistName;
 	private String mAlbumName;
@@ -36,17 +43,31 @@ public class PlayerActivity extends Activity implements OnClickListener{
 		 * Load initialize track
 		 */
 		Bundle extras = getIntent().getExtras();
-		loadTrack(extras.getLong("track_id"));
-		playTrack();
+		loadTrack(extras.getString("track_key"));
+		
+		/*
+		 * Create audio service binding and play first tracks
+		 */
+		//load audio service
+		doBindService();
+		//play somethign on it
+		mPlayerService.playTrack(mTrack);
+		int startPosition = extras.getInt("track_position",-1);
+		if(startPosition >= 0) mPlayerService.seekTo(startPosition);
 		
 		/*
 		 * Add button actions
 		 */
 		mBookmarkButton = (Button)findViewById(R.id.bookmark_btn);
 		mBookmarkButton.setOnClickListener(this);
+
+		/*
+		 * Seek bar action
+		 */
+		mTrackSeekBar = (SeekBar)findViewById(R.id.track_seek_bar);
+		mTrackSeekBar.setOnSeekBarChangeListener(this);
 		
 	}
-
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -58,11 +79,11 @@ public class PlayerActivity extends Activity implements OnClickListener{
 	/**
 	 * @return track from id
 	 */
-	private void loadTrack(long trackId){
+	private void loadTrack(String trackKey){
 		mTrack = new Track();
 		
-		String selectStr = MediaStore.Audio.Media._ID+" = ?";
-		String[] selectArgs = { Long.toString(trackId) };
+		String selectStr = MediaStore.Audio.Media.TITLE_KEY+" = ?";
+		String[] selectArgs = { trackKey };
 		
 		//get album name and ids
 		String[] projection = { MediaStore.Audio.Media._ID,
@@ -95,20 +116,45 @@ public class PlayerActivity extends Activity implements OnClickListener{
 	}
 	
 	/**
-	 * plays current track
+	 * @category service connection binding
 	 */
-	private void playTrack(){
-		try{
-			mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-			mPlayer.setDataSource(getApplicationContext(), mTrack.getUri());
-			mPlayer.prepare();
-			mPlayer.start();        		
-		} catch (IOException e) {
-			Log.e("minstrel.WelcomActivity", e.toString());
+	
+	private ServiceConnection mConnection = new ServiceConnection(){
+		public void onServiceConnected(ComponentName className, IBinder service) {
+			mPlayerService = ((AudioPlayerService.LocalBinder)service).getService();
+			Log.d("FUUUUUUCK", "service bound "+service.toString());
 		}
+		
+		 public void onServiceDisconnected(ComponentName className) {
+			 
+		 }
+	};
+	
+	void doBindService() {
+		
+	    bindService(new Intent(this, 
+	            AudioPlayerService.class), mConnection, Context.BIND_AUTO_CREATE);
+	    mIsBound = true;
 	}
 
+	void doUnbindService() {
+	    if (mIsBound) {
+	        // Detach our existing connection.
+	        unbindService(mConnection);
+	        mIsBound = false;
+	    }
+	}
 
+	@Override
+	protected void onDestroy() {
+	    super.onDestroy();
+	    doUnbindService();
+	}
+
+	/**
+	 * @category UI Events
+	 */
+	
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -118,10 +164,25 @@ public class PlayerActivity extends Activity implements OnClickListener{
 			bookmark.setTrackKey(mTrack.getTitleKey());
 			bookmark.setAlbumName(mAlbumName);
 			bookmark.setArtistName(mArtistName);
-			bookmark.setPosition(mPlayer.getCurrentPosition());
-			bookmark.save();
-			
-			Log.d("FUUUUUUCK bookmark count", Integer.toString(Bookmark.getAll().size()));
+			bookmark.setPosition(mPlayerService.getCurrentPosition());
+			bookmark.save();			
 		}
+	}
+	
+	@Override
+	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+		Log.d("Progress Bar", Integer.toString(progress));		
+	}
+
+	@Override
+	public void onStartTrackingTouch(SeekBar seekBar) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onStopTrackingTouch(SeekBar seekBar) {
+		// TODO Auto-generated method stub
+		
 	}
 }

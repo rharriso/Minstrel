@@ -107,7 +107,7 @@ public class TracksActivity extends Activity implements OnItemClickListener{
 		
 		Intent intent = new Intent();
 		intent.setClass(this, PlayerActivity.class);		
-		intent.putExtra("track_id", track.getId());
+		intent.putExtra("track_key", track.getTitleKey());
 		
 		startActivity(intent);
 	}

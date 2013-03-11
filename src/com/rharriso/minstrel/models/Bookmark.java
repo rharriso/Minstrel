@@ -8,14 +8,14 @@ import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 
 @Table(name = "Bookmarks")
-public class Bookmark extends Model{
+public class Bookmark extends Model implements ModelListItem{
 
 	@Column(name = "track_key")
 	private String trackKey;
-	@Column(name = "position")
-	private int position;
 	@Column(name = "track_name")
 	private String trackName;
+	@Column(name = "position")
+	private int position;	
 	@Column(name = "album_name")
 	private String albumName;
 	@Column(name = "artist_name")
@@ -52,8 +52,17 @@ public class Bookmark extends Model{
 		this.artistName = artistName;
 	}
 	
-	
+	/*
+	 * @returns ArrayList<Bookmark> of all Bookmarks in the database 
+	 */
 	public static ArrayList<Bookmark> getAll(){
 		return new Select().from(Bookmark.class).execute();
+	}
+
+	/*
+		List stuffs
+	*/
+	public String getListTitle(){
+		return artistName+" ("+albumName+")"+trackName+" - "+Integer.toString(position);
 	}
 }
