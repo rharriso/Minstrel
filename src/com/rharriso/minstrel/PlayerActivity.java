@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.rharriso.minstrel.models.Bookmark;
 import com.rharriso.minstrel.models.Track;
+import com.rharriso.minstrel.util.TimeFormatter;
 
 public class PlayerActivity extends Activity implements OnClickListener, OnSeekBarChangeListener{
 
@@ -149,32 +150,28 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
 		}
 	}
 	
+	private Boolean isSeeking = false;
+	
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-		mPlayerService.seekTo(progress);		
+		if(isSeeking) mPlayerService.seekTo(progress);		
 	}
 
 	@Override
 	public void onStartTrackingTouch(SeekBar seekBar) {
-		// TODO Auto-generated method stub
-		
+		isSeeking = true;
 	}
 
 	@Override
 	public void onStopTrackingTouch(SeekBar seekBar) {
-		// TODO Auto-generated method stub
-		
+		isSeeking = false;
 	}
 	
 	protected void updateTimeStamp(){
 		if(mPlayerService == null) return;
 		
 		int currentPosition = mPlayerService.getCurrentPosition();
-		String timeStampStr = String.format("%02d:%02d", 
-				(int) ((currentPosition / (1000*60)) % 60),
-				(int) currentPosition / 1000 );
-		
-		mTimeStamp.setText(timeStampStr);
+		mTimeStamp.setText(TimeFormatter.MillesecondsToTimestamp(currentPosition));
 		mTrackSeekBar.setProgress(currentPosition);
 	}
 }

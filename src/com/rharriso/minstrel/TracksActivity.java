@@ -109,7 +109,7 @@ public class TracksActivity extends Activity implements OnItemClickListener{
 		
 		Intent serviceIntent = new Intent(this, AudioPlayerService.class);
 		serviceIntent.putExtra("track_key", track.getTitleKey());
-		sendBroadcast(serviceIntent);
+		startService(serviceIntent);
 		
 		Intent intent = new Intent();
 		intent.setClass(this, PlayerActivity.class);

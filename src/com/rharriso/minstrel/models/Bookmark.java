@@ -6,6 +6,7 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
+import com.rharriso.minstrel.util.TimeFormatter;
 
 @Table(name = "Bookmarks")
 public class Bookmark extends Model implements ModelListItem{
@@ -63,6 +64,6 @@ public class Bookmark extends Model implements ModelListItem{
 		List stuffs
 	*/
 	public String getListTitle(){
-		return artistName+" ("+albumName+")"+trackName+" - "+Integer.toString(position);
+		return artistName+" ("+albumName+")"+trackName+" - "+TimeFormatter.MillesecondsToTimestamp(position);
 	}
 }
