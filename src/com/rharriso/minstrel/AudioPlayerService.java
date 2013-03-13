@@ -127,7 +127,7 @@ public class AudioPlayerService extends Service{
 		mNextTrack = mTrack.nextTrack(this);
 		
 		try{
-			if(mPlayer.isPlaying()){
+			if(mPlayer != null){
 				mPlayer.release();
 				initMediaPlayer();
 			}
@@ -146,6 +146,7 @@ public class AudioPlayerService extends Service{
 	 */
 	private void initMediaPlayer(){
 		mPlayer = new MediaPlayer();
+		mPlayer.setLooping(false);
 		mPlayer.setOnCompletionListener(new OnCompletionListener() {
 			@Override
 			public void onCompletion(MediaPlayer mp) {

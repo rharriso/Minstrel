@@ -141,7 +141,7 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
 			bookmark.setTrackName(track.getTitle());
 			bookmark.setTrackKey(track.getTitleKey());
 			bookmark.setAlbumName(track.getAlbumName());
-			bookmark.setArtistName(track.getAristName());
+			bookmark.setArtistName(track.getArtistName());
 			bookmark.setPosition(mPlayerService.getCurrentPosition());
 			bookmark.save();			
 		

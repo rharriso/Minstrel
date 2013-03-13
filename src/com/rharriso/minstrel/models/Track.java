@@ -12,7 +12,7 @@ public class Track implements ModelListItem{
 	private String title;
 	private String titleKey;
 	private String albumName;
-	private String aristName;
+	private String artistName;
 	private Long id;
 	private Uri uri;
 	private Long duration;
@@ -35,11 +35,11 @@ public class Track implements ModelListItem{
 	public void setAlbumName(String albumName) {
 		this.albumName = albumName;
 	}
-	public String getAristName() {
-		return aristName;
+	public String getArtistName() {
+		return artistName;
 	}
-	public void setAristName(String aristName) {
-		this.aristName = aristName;
+	public void setAtristName(String aristName) {
+		this.artistName = aristName;
 	}
 	public void setTitleKey(String titleKey) {
 		this.titleKey = titleKey;
@@ -91,7 +91,7 @@ public class Track implements ModelListItem{
 		String[] selectArgs = { albumName };
 		
 		//search for albums for all artists or just the passed on		
-		Cursor cursor = queryTracks(ctx, selectStr, selectArgs);
+		Cursor cursor = Track.queryTracks(ctx, selectStr, selectArgs);
 		
 		if(cursor.moveToFirst()){
 			int keyCol = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE_KEY);
@@ -161,7 +161,7 @@ public class Track implements ModelListItem{
 		track.setTitleKey(cursor.getString(titleKeyCol));
 		track.setDuration(cursor.getLong(durationCol));
 		track.setAlbumName(cursor.getString(albumCol));
-		track.setAlbumName(cursor.getString(artistCol));
+		track.setAtristName(cursor.getString(artistCol));
 		
 		return track;
 	}
