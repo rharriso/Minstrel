@@ -34,6 +34,7 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
 	private Button mPausePlayButton;
 	private SeekBar mTrackSeekBar;
 	private TextView mTimeStamp;
+	private TextView mTrackTitle;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,7 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
 		mPausePlayButton = (Button)findViewById(R.id.pause_play_btn);
 		mPausePlayButton.setOnClickListener(this);
 		mTimeStamp = (TextView)findViewById(R.id.time_stamp);
+		mTrackTitle = (TextView)findViewById(R.id.track_title);
 
 		/*
 		 * Seek bar action
@@ -69,7 +71,7 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
 				runOnUiThread(new Runnable() {			
 					@Override
 					public void run() {
-						updateTimeStamp(); 
+						updateTrackInfo(); 
 					}
 				});
 			}
@@ -167,11 +169,19 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
 		isSeeking = false;
 	}
 	
-	protected void updateTimeStamp(){
+	protected void updateTrackInfo(){
 		if(mPlayerService == null) return;
 		
 		int currentPosition = mPlayerService.getCurrentPosition();
 		mTimeStamp.setText(TimeFormatter.MillesecondsToTimestamp(currentPosition));
 		mTrackSeekBar.setProgress(currentPosition);
+		
+		Track currentTrack = mPlayerService.getCurrentTrack();
+		StringBuffer titleBuffer = new StringBuffer();
+		titleBuffer.append(currentTrack.getAlbumName());
+		titleBuffer.append(": ");
+		titleBuffer.append(currentTrack.getTitle());
+		mTrackTitle.setText(titleBuffer.toString());
+		
 	}
 }

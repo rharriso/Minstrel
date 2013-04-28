@@ -140,7 +140,7 @@ public class Track implements ModelListItem{
 		
 		ContentResolver contentResolver = ctx.getContentResolver();
 		return contentResolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-				projection, selectStr, selectArgs, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
+				projection, selectStr, selectArgs, MediaStore.Audio.Media.TRACK);
 	}
 	
 	/**
