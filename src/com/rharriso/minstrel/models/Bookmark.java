@@ -19,6 +19,8 @@ public class Bookmark extends Model implements ModelListItem{
 	private int position;	
 	@Column(name = "album_name")
 	private String albumName;
+    @Column(name = "album_id")
+    private Long albumId;
 	@Column(name = "artist_name")
 	private String artistName;
 	
@@ -46,12 +48,19 @@ public class Bookmark extends Model implements ModelListItem{
 	public void setAlbumName(String albumName) {
 		this.albumName = albumName;
 	}
+    public Long getAlbumId() {
+        return albumId;
+    }
+    public void setAlbumId(long albumId) {
+        this.albumId = albumId;
+    }
 	public String getArtistName() {
 		return artistName;
 	}
 	public void setArtistName(String artistName) {
 		this.artistName = artistName;
 	}
+
 	
 	/*
 	 * @returns ArrayList<Bookmark> of all Bookmarks in the database 

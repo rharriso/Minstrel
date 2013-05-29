@@ -146,8 +146,10 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
 	public void onClick(View v) {
         switch (v.getId()){
             case R.id.prev_button:
+                mPlayerService.playPrev();
                 break;
             case R.id.next_button:
+                mPlayerService.playNext();
                 break;
             case R.id.pause_play_btn:
                 mPlayerService.playToggle();
@@ -206,6 +208,7 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
         bookmark.setTrackKey(track.getTitleKey());
         bookmark.setAlbumName(track.getAlbumName());
         bookmark.setArtistName(track.getArtistName());
+        bookmark.setAlbumId(mPlayerService.getCurrentAlbumId());
         bookmark.setPosition(mPlayerService.getCurrentPosition());
         bookmark.save();
     }

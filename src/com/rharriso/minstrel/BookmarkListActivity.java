@@ -50,6 +50,7 @@ public class BookmarkListActivity extends Activity implements OnItemClickListene
 	
 		Intent serviceIntent = new Intent(this, AudioPlayerService.class);
 		serviceIntent.putExtra("track_key", bookmark.getTrackKey());
+        serviceIntent.putExtra("album_id", bookmark.getAlbumId());
 		serviceIntent.putExtra("track_position", bookmark.getPosition());
 		startService(serviceIntent);
 		

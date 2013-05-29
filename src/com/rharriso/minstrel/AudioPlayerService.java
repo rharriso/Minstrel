@@ -1,6 +1,7 @@
 package com.rharriso.minstrel;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import android.app.Service;
 import android.content.Intent;
@@ -12,13 +13,18 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.rharriso.minstrel.models.Album;
+import com.rharriso.minstrel.models.ModelListItem;
 import com.rharriso.minstrel.models.Track;
 
 public class AudioPlayerService extends Service{
-	
+
+    private long mAlbumId;
+    private ArrayList<ModelListItem> mTrackList;
 	private Track mTrack;
 	private Track mNextTrack;
 	private MediaPlayer mPlayer;
+    private int currTrackIndex;
 			
 	public AudioPlayerService() {
 	}
@@ -59,10 +65,18 @@ public class AudioPlayerService extends Service{
 		if(intent != null){
 			Bundle extras = intent.getExtras();
 			
-			//play track if key passed
+			// get tack key
 			String trackKey = extras.getString("track_key");
-			if(trackKey != null) playTrack(Track.findWithKey(this, trackKey));
-						
+            // get tracks for passed album
+            mAlbumId = extras.getLong("album_id", -1);
+            if(mAlbumId < 0){
+               throw new Error("Invalid album id passed");
+            }
+
+            // load list and play track
+            mTrackList = Album.findTrackListWithKey(this, mAlbumId);
+            playTrack(getTrackIndex(trackKey));
+
 			//go to track position if passed
 			int startPosition = extras.getInt("track_position",-1);
 			if(startPosition >= 0) 
@@ -99,6 +113,13 @@ public class AudioPlayerService extends Service{
 	public Track getCurrentTrack(){
 		return mTrack;
 	}
+
+    /**
+     *  @return Long integer of album id
+     */
+    public Long getCurrentAlbumId(){
+        return mAlbumId;
+    }
 	
 	/**
 	 * set the current track position to set value
@@ -118,13 +139,46 @@ public class AudioPlayerService extends Service{
 			mPlayer.start();
 			
 	}
-			
+
+    /**
+     * plays the next track
+     */
+    public void playNext(){
+        playTrack(currTrackIndex+1);
+    }
+
+    /**
+     * plays the next track
+     */
+    public void playPrev(){
+        playTrack(currTrackIndex-1);
+    }
+
+    /**
+     * @param titleKey
+     * @return integer of index of track with key passed
+     */
+    private int getTrackIndex(String titleKey){
+        int index = 0;
+        for( ModelListItem track : mTrackList ){
+            String trackKey = ((Track) track).getTitleKey();
+            if(titleKey.equals(trackKey))
+                break;
+            else
+                index++;
+        }
+        return index;
+    }
+
 	/**
-	 * @param track - track to be played
+	 * @param index - index of track to be played
 	 */
-	public void playTrack(Track track){
-		mTrack = track;
-		mNextTrack = mTrack.nextTrack(this);
+	private void playTrack(int index){
+        // don't go out of bounds
+        if(index < 0 || index > mTrackList.size()-1) return;
+
+        currTrackIndex = index;
+        mTrack = (Track) mTrackList.get(currTrackIndex);
 		
 		try{
 			if(mPlayer != null){
@@ -133,7 +187,7 @@ public class AudioPlayerService extends Service{
 			}
 			
 			mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-			mPlayer.setDataSource(getApplicationContext(), track.getUri());
+			mPlayer.setDataSource(getApplicationContext(), mTrack.getUri());
 			mPlayer.prepare();
 			mPlayer.start();        		
 		} catch (IOException e) {
@@ -151,7 +205,7 @@ public class AudioPlayerService extends Service{
 			@Override
 			public void onCompletion(MediaPlayer mp) {
 				if(mNextTrack != null)
-					playTrack(mNextTrack);				
+					playTrack(currTrackIndex+1);
 			}
 		});
 	}
