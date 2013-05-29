@@ -29,12 +29,14 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
 	private AudioPlayerService mPlayerService = null;
 	private Boolean mIsBound = false;
 	private Timer mTimer = null;
-	
-	private Button mBookmarkButton;
-	private Button mPausePlayButton;
+
+	private Button mBookmarkButton,
+                   mPausePlayButton,
+                   mPrevButton,
+                   mNextButton;
 	private SeekBar mTrackSeekBar;
-	private TextView mTimeStamp;
-	private TextView mTrackTitle;
+	private TextView mTimeStamp,
+                     mTrackTitle;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,22 +49,28 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
 		//load audio service
 		doBindService();
 		
-		/*
-		 * Add button actions
-		 */
+		// buttons
+        // bookmark
 		mBookmarkButton = (Button)findViewById(R.id.bookmark_btn);
 		mBookmarkButton.setOnClickListener(this);
+        // pause play button
 		mPausePlayButton = (Button)findViewById(R.id.pause_play_btn);
 		mPausePlayButton.setOnClickListener(this);
-		mTimeStamp = (TextView)findViewById(R.id.time_stamp);
-		mTrackTitle = (TextView)findViewById(R.id.track_title);
+        // next button
+        mNextButton= (Button)findViewById(R.id.next_button);
+        mNextButton.setOnClickListener(this);
+        // prev button
+        mPrevButton = (Button)findViewById(R.id.prev_button);
+        mPrevButton.setOnClickListener(this);
 
-		/*
-		 * Seek bar action
-		 */
+		// seek bar
 		mTrackSeekBar = (SeekBar)findViewById(R.id.track_seek_bar);
 		mTrackSeekBar.setOnSeekBarChangeListener(this);
-		
+
+        //text views
+        mTimeStamp = (TextView)findViewById(R.id.time_stamp);
+        mTrackTitle = (TextView)findViewById(R.id.track_title);
+
 		//check the time relatively often
 		mTimer = new Timer();
 		mTimer.scheduleAtFixedRate(new TimerTask() {				
@@ -136,20 +144,20 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
 	
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		if(v == mBookmarkButton){
-			Track track = mPlayerService.getCurrentTrack();
-			Bookmark bookmark = new Bookmark();
-			bookmark.setTrackName(track.getTitle());
-			bookmark.setTrackKey(track.getTitleKey());
-			bookmark.setAlbumName(track.getAlbumName());
-			bookmark.setArtistName(track.getArtistName());
-			bookmark.setPosition(mPlayerService.getCurrentPosition());
-			bookmark.save();			
-		
-		}else if(v == mPausePlayButton){
-			mPlayerService.playToggle();
-		}
+        switch (v.getId()){
+            case R.id.prev_button:
+                break;
+            case R.id.next_button:
+                break;
+            case R.id.pause_play_btn:
+                mPlayerService.playToggle();
+                break;
+            case R.id.bookmark_btn:
+                bookmarkTrack();
+                break;
+            default:
+                break;
+        }
 	}
 	
 	private Boolean isSeeking = false;
@@ -168,7 +176,10 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
 	public void onStopTrackingTouch(SeekBar seekBar) {
 		isSeeking = false;
 	}
-	
+
+    /**
+     * Pull track info from service
+     */
 	protected void updateTrackInfo(){
 		if(mPlayerService == null) return;
 		
@@ -184,4 +195,18 @@ public class PlayerActivity extends Activity implements OnClickListener, OnSeekB
 		mTrackTitle.setText(titleBuffer.toString());
 		
 	}
+
+    /**
+     * create book make of current track position
+     */
+    private void bookmarkTrack(){
+        Track track = mPlayerService.getCurrentTrack();
+        Bookmark bookmark = new Bookmark();
+        bookmark.setTrackName(track.getTitle());
+        bookmark.setTrackKey(track.getTitleKey());
+        bookmark.setAlbumName(track.getAlbumName());
+        bookmark.setArtistName(track.getArtistName());
+        bookmark.setPosition(mPlayerService.getCurrentPosition());
+        bookmark.save();
+    }
 }
