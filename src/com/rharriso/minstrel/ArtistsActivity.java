@@ -32,7 +32,7 @@ public class ArtistsActivity extends Activity implements OnItemClickListener{
 		loadArtists();		
 		//set up list
 		mArtistListView = (ListView)findViewById(R.id.artist_list);
-		ModelListAdapter adapter = new ModelListAdapter(this, mArtistList);
+		ModelListAdapter adapter = new ModelListAdapter(this, R.layout.image_list_item, mArtistList);
 		mArtistListView.setAdapter(adapter);
 		mArtistListView.setOnItemClickListener(this);
 	}

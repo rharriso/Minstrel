@@ -40,7 +40,7 @@ public class TracksActivity extends Activity implements OnItemClickListener{
 
 		// set up list
 		mTrackListView = (ListView) findViewById(R.id.track_list);
-		ModelListAdapter adapter = new ModelListAdapter(this, mTrackList);
+		ModelListAdapter adapter = new ModelListAdapter(this, R.layout.image_list_item, mTrackList);
 		mTrackListView.setAdapter(adapter);
 		mTrackListView.setOnItemClickListener(this);
 	}

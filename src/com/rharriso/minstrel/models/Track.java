@@ -154,7 +154,7 @@ public class Track implements ModelListItem{
 		int durationCol	= cursor.getColumnIndex(MediaStore.Audio.Media.DURATION);
 		int artistCol	= cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
 		int albumCol	= cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM);
-		
+
 		Track track = new Track();
 		track.setId(cursor.getLong(idCol));
 		track.setTitle(cursor.getString(titleCol));

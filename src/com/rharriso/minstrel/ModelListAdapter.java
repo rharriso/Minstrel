@@ -18,13 +18,19 @@ import com.rharriso.minstrel.models.ModelListItem;
 public class ModelListAdapter extends ArrayAdapter<ModelListItem>{
 	private Context mContext;
 	private List<ModelListItem> mModelList;
-	
+
+    public ModelListAdapter(Context context, int layout, List<ModelListItem> models){
+        super(context, layout, models);
+
+        mContext	= context;
+        mModelList	= models;
+    }
+
 	public ModelListAdapter(Context context, List<ModelListItem> models) {
-		super(context, R.layout.list_row, models);
-		
-		mContext	= context;
-		mModelList	= models;
-		
+        super(context, R.layout.list_item, models);
+
+        mContext	= context;
+        mModelList	= models;
 	}
 	
 	@Override
@@ -33,7 +39,7 @@ public class ModelListAdapter extends ArrayAdapter<ModelListItem>{
 		
 		if (row == null){
 			LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
-			row = inflater.inflate(R.layout.list_row, parent, false);
+			row = inflater.inflate(R.layout.list_item, parent, false);
 		}
 		
 		ModelListItem model = mModelList.get(position);
@@ -41,6 +47,9 @@ public class ModelListAdapter extends ArrayAdapter<ModelListItem>{
 		if(model != null){
 			TextView titleTxt = (TextView)row.findViewById(R.id.row_title);
 			if(titleTxt != null) titleTxt.setText(model.getListTitle());
+
+//            ImageView imgView = (ImageView)row.findViewById(R.id.row_image);
+//            if(imgView != null) imgView.setImageResource();
 		}
 		
 		return row;

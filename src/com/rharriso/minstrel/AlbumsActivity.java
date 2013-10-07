@@ -35,7 +35,7 @@ public class AlbumsActivity extends Activity implements OnItemClickListener{
 		loadAlbums();
 		//set up list
 		mAlbumListView = (ListView) findViewById(R.id.album_list);
-		ModelListAdapter adapter = new ModelListAdapter(this, mAlbumList);
+		ModelListAdapter adapter = new ModelListAdapter(this, R.layout.image_list_item, mAlbumList);
 		mAlbumListView.setAdapter(adapter);
 		mAlbumListView.setOnItemClickListener(this);
 	}
