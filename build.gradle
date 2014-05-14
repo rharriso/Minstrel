@@ -18,6 +18,8 @@ repositories {
 
 dependencies{
     retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:1.+'
+    compile 'com.android.support:appcompat-v7:+'
+    compile files('libs/activeandroid-3.0.jar')
 }
 
 
@@ -26,7 +28,7 @@ android {
     buildToolsVersion "19.0.3"
 
     sourceSets {
-          main {
+        main {
             manifest.srcFile 'AndroidManifest.xml'
             java.srcDirs = ['src']
             resources.srcDirs = ['src']

@@ -6,10 +6,9 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class WelcomeActivity extends Activity implements OnClickListener {
+public class WelcomeActivity extends Activity {
 
 	MediaPlayer mPlayer = new MediaPlayer();
 	Button mArtistsBtn = null;
@@ -22,11 +21,17 @@ public class WelcomeActivity extends Activity implements OnClickListener {
         setContentView(R.layout.welcome);
         
         mArtistsBtn = (Button)findViewById(R.id.artists_btn);
-        mArtistsBtn.setOnClickListener(this);
+        mArtistsBtn.setOnClickListener((View v) ->{
+            loadActivity(ArtistsActivity.class);
+        });
         mAlbumsBtn = (Button)findViewById(R.id.albums_btn);
-        mAlbumsBtn.setOnClickListener(this);
+        mAlbumsBtn.setOnClickListener((View v) ->{
+            loadActivity(AlbumsActivity.class);
+        });
         mBookmarksBtn = (Button)findViewById(R.id.bookmarks_btn);
-        mBookmarksBtn.setOnClickListener(this);
+        mBookmarksBtn.setOnClickListener((View v) ->{
+            loadActivity(BookmarkListActivity.class);
+        });
     }
 
     @Override
@@ -36,19 +41,14 @@ public class WelcomeActivity extends Activity implements OnClickListener {
         return true;
     }
 
-	@Override
-	public void onClick(View v) {		
-		Intent intent = new Intent();
-		Class<?> activityClass = null;	
-		
-		if(v == mArtistsBtn)	activityClass = ArtistsActivity.class;
-		if(v == mAlbumsBtn)		activityClass = AlbumsActivity.class;
-        if(v == mBookmarksBtn)  activityClass = BookmarkListActivity.class;
-		
-        if(activityClass != null){
-        	intent.setClass(this, activityClass);
-        	startActivity(intent);
-        }		
-	}
+    /**
+     * Loads an activity into the mainview or whatever
+     * @param activityClass
+     */
+    private void loadActivity(Class<?> activityClass){
+        Intent intent = new Intent();
+        intent.setClass(this, activityClass);
+        startActivity(intent);
+    }
     
 }

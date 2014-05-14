@@ -1,12 +1,12 @@
 package com.rharriso.minstrel.models;
 
-import java.util.ArrayList;
-
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 import com.rharriso.minstrel.util.TimeFormatter;
+
+import java.util.ArrayList;
 
 @Table(name = "Bookmarks")
 public class Bookmark extends Model implements ModelListItem{
