@@ -10,26 +10,26 @@ import android.widget.Button;
 
 public class WelcomeActivity extends Activity {
 
-	MediaPlayer mPlayer = new MediaPlayer();
-	Button mArtistsBtn = null;
-	Button mAlbumsBtn = null;
+    MediaPlayer mPlayer = new MediaPlayer();
+    Button mArtistsBtn = null;
+    Button mAlbumsBtn = null;
     Button mBookmarksBtn = null;
-	
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);        
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.welcome);
-        
-        mArtistsBtn = (Button)findViewById(R.id.artists_btn);
-        mArtistsBtn.setOnClickListener((View v) ->{
+
+        mArtistsBtn = (Button) findViewById(R.id.artists_btn);
+        mArtistsBtn.setOnClickListener((View v) -> {
             loadActivity(ArtistsActivity.class);
         });
-        mAlbumsBtn = (Button)findViewById(R.id.albums_btn);
-        mAlbumsBtn.setOnClickListener((View v) ->{
+        mAlbumsBtn = (Button) findViewById(R.id.albums_btn);
+        mAlbumsBtn.setOnClickListener((View v) -> {
             loadActivity(AlbumsActivity.class);
         });
-        mBookmarksBtn = (Button)findViewById(R.id.bookmarks_btn);
-        mBookmarksBtn.setOnClickListener((View v) ->{
+        mBookmarksBtn = (Button) findViewById(R.id.bookmarks_btn);
+        mBookmarksBtn.setOnClickListener((View v) -> {
             loadActivity(BookmarkListActivity.class);
         });
     }
@@ -43,12 +43,13 @@ public class WelcomeActivity extends Activity {
 
     /**
      * Loads an activity into the mainview or whatever
+     *
      * @param activityClass
      */
-    private void loadActivity(Class<?> activityClass){
+    private void loadActivity(Class<?> activityClass) {
         Intent intent = new Intent();
         intent.setClass(this, activityClass);
         startActivity(intent);
     }
-    
+
 }
